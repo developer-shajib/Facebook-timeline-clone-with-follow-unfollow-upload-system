@@ -1,0 +1,72 @@
+
+        <div class="wrapper">
+            <div class="container conte">
+                <div class="row">
+                    <div class="back_btn">
+                        <a href="/"><i class="fa-solid fa-arrow-left"></i></a>
+                    </div>
+                    <div class="col-md-10 m-auto">
+
+                        <div class="single_friend">
+
+                            <% friends.forEach(data => { %>
+                                  <div class="single_box card shadow">
+                                <div class="card-body">
+                                    <div class="friend_info">
+                                        <a href="/friend-profile/<%= data._id %>">
+                                            <% if (data.profile) { %>
+                                                <img src="/assets/profile/profile_img/<%= data.profile %> " alt="">
+                              
+                                                <% } else { %>
+                                                <img src="/assets/images/avatar.png" alt="">
+                              
+                                            <% } %>
+                                        </a>
+
+                                        <div class="show_info">
+                                            <a class="name_btn" href="/friend-profile/<%= data._id %> "><%= data.firstName %>  <%= data.surName %> </a>
+                                            
+                                            <% let follow = user_data.following.some(item => item == data._id ) %>
+                                            
+                                            <% if (follow) { %>
+                                                 <a class="unfollow_btn" href="/unfollow/<%= data._id %> ">Unfollow</a>
+
+                                                <% } else { %>
+                                                    <a class="follow_btn" href="/follow/<%= data._id %> ">Follow</a>
+                                                    <% } %>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <% }) %>
+                            
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        
+    <% if (msg) { %>
+        <script>
+          var Toast = Swal.mixin({
+          toast: true,
+          position: 'top',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+          }
+          })
+
+          Toast.fire({
+            icon: `<%= icon%>`,
+            title: `<%= msg%>`
+          })
+        </script>
+
+    <% } %>

@@ -1,0 +1,170 @@
+
+
+    <div class="wrapper">
+
+        
+        <div class="container">
+            
+            <div class="row">
+                <div class="back_btn">
+                    <a href="/"><i class="fa-solid fa-arrow-left"></i></a>
+                </div>
+                <div class="col-md-10 m-auto">
+                    <div class="main_content">
+                        
+                        <div class="cover_pho">
+                        
+
+                           <% if (user_data) { %>
+                            <% if (user_data.cover_photo) { %>
+
+                                <img class="cover_img" src="./assets/profile/cover_img/<%= user_data.cover_photo %>  " alt="">
+
+                                <% } else { %>
+                                    <img class="cover_img" src="./assets/images/cover.jpg " alt="">
+                                    
+                                <% } %>
+                           <% } %>
+                        
+                        <div class="cover_up">
+                                <form action="/cover-update" method="post" enctype="multipart/form-data">
+                                    <label for="cover_pic">
+                                        <i class="fa-solid fa-camera"></i>
+                                        <span>Edit Cover Photo</span>
+                                    </label>
+                                    <input name="cover_pic" style="display: none;" id="cover_pic" type="file">
+                                    <input class="change_btn" type="submit" value="Change">
+                                </form>
+                        </div>
+                        </div>
+
+
+                        <div class="profile_info">
+
+                            <% if (profile_img) { %>
+                                <img class="profile_img" src="/assets/profile/profile_img/<%= profile_img %> " alt="">
+
+                                <% } else { %>
+                                <img class="profile_img" src="/assets/images/avatar.png" alt="">
+
+                            <% } %>
+                            
+                            <div class="profile_pic">
+                                <form action="/profile-update" method="post" enctype="multipart/form-data">
+                                    <label for="profile_pic">
+                                        <i class="profile_icon fa-solid fa-camera"></i>
+                                    </label>
+                                    <input name="profile" style="display: none;" id="profile_pic" type="file">
+                                    <input class="change_btn" type="submit" value="Change">
+                                </form>
+                            </div>
+
+                            <div class="profile_short_info">
+                                <h3><%= user_data.firstName %> <%= user_data.surName %> </h3>
+                                <a href="#">1.2k friends</a>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+
+                    <div class="option">
+                        <a class="active" href="/profile">Gallery</a>
+                        <a  href="/follower-page">Follower</a>
+                        <a href="/following-page">Following</a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="body_wrapper">
+        <div class="container">
+            <div class="row">
+                <div class="body_info_show col-md-10 mx-auto">
+                    <div class="body_info">
+                        <h3>Gallery</h3>
+                    </div>
+                    <hr>
+                    <div class="showGalleryImg">
+
+                        <% if (user_data.gallery) { %>
+
+                         <% user_data.gallery.forEach((item,index) => { %>
+
+                            <div class="gal_image_show">
+                                <img src="/assets/profile/gal_img/<%= item %> " alt="">
+                                <a class="gal_del_btn_<%= index %>" href="#"><i style="pointer-events: none;" class="fa-solid fa-x"></i></a>
+                            
+                            </div>
+                         <% }) %>
+
+                        <% } %>
+
+
+                    </div>
+                    <form  action="/gallery-update" method="post" enctype="multipart/form-data">
+                        <label class="gal_file_up" for="gal_file">
+                            <i class="gal_icon fa-solid fa-camera"></i>
+                            <span>File Upload</span>
+                        </label>
+                        <input id="gal_file" name="gallery" multiple type="file">
+                        <input class="upload_btn btn btn-primary w-100" type="submit" value="Upload">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+<% if (msg) { %>
+
+    <script>
+      var Toast = Swal.mixin({
+      toast: true,
+      position: 'top',
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true,
+      didOpen: (toast) => {
+        toast.addEventListener('mouseenter', Swal.stopTimer)
+        toast.addEventListener('mouseleave', Swal.resumeTimer)
+      }
+      })
+
+      Toast.fire({
+        icon: `<%= icon%>`,
+        title: `<%= msg%>`
+      })
+    </script>
+
+<% } %>
+
+
+ <% if (user_data.gallery) { %>
+
+    <% user_data.gallery.forEach((item,index) => { %>
+
+
+       <script>
+        const gal_del_btn = document.querySelector('.gal_del_btn_<%=index%>');
+    
+        gal_del_btn.onclick = (e)=>{
+            console.log(e.target);
+            Swal.fire({
+          title: 'Are Your Sure?',
+          icon: 'warning',
+          showCloseButton: true,
+          showCancelButton: true,
+          confirmButtonText:
+            '<a href="/gallery/<%= index %> ">Delete</a> ',
+          cancelButtonText: 'Cancel <%= index %>',
+        });
+        }
+    </script>
+
+    <% }) %>
+
+   <% } %>
+
